@@ -1,7 +1,10 @@
 package com.example.demo.rest;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(path="/user")
 public interface UserRest {
     @PostMapping(path="/signup")
