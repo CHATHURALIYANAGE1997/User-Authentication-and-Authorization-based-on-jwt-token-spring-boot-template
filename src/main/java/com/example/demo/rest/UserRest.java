@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:3000")
+
 @RequestMapping(path="/user")
 public interface UserRest {
     @PostMapping(path="/signup")
