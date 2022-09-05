@@ -73,5 +73,26 @@ public class UserServiceImpl implements UserService {
 
     }
 
-
+    @Override
+    public ResponseEntity<String> login(Map<String, String> requestMap) {
+        log.info("Inside login");
+        try {
+            JSONObject jsonObject = new JSONObject();
+            Authentication auth= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(requestMap.get("email"),requestMap.get("password")));
+            if(auth.isAuthenticated()){
+                if(customerUserDetailsService.getUserDetails().getStatus().equalsIgnoreCase("ture")){
+                    jsonObject.put("token", jwtUtil.generateToken(customerUserDetailsService.getUserDetails().getEmail(), customerUserDetailsService.getUserDetails().getRole()));
+                    jsonObject.put("name", customerUserDetailsService.getUserDetails().getEmail());
+                    jsonObject.put("role", customerUserDetailsService.getUserDetails().getRole());
+                    return new ResponseEntity<String>(jsonObject.toString(), HttpStatus.OK);
+                }
+                else {
+                    return new ResponseEntity<String>("{\"message\":\""+"Your account is temporarly suspennded,So wait for admin aprove."+"\"}",HttpStatus.BAD_REQUEST);
+                }
+            }
+        }catch (Exception ex){
+            log.error("{}",ex);
+        }
+        return new ResponseEntity<String>("{\"message\":\""+"Bad Credentials."+"\"}",HttpStatus.BAD_REQUEST);
+    }
 }
