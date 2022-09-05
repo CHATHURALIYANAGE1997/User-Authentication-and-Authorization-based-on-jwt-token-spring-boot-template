@@ -46,7 +46,6 @@ public class UserServiceImpl implements UserService {
         try {
             User user = userRepo.findByEmail(requestMap.get("email"));
             if (Objects.isNull(user)) {
-                //user.setPassword(passwordEncoder.encode(user.getPassword()));
                 userRepo.save(getUserFromMap(requestMap));
                 return UserUntils.getResponseEntity("SuccessFully Registrered", HttpStatus.OK);
             } else {
